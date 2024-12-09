@@ -10,6 +10,8 @@ const App: React.FC = () => {
     fetchTodos();
   }, []);
 
+console.log(`Message Welcome: ${process.env.REACT_APP_WELCOME_MESSAGE}`);
+
   const fetchTodos = (): void => {
     getTodos()
       .then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))

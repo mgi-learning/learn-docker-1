@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  server: 
+    environment:
+      - WELCOME_MESSAGE=Welcome to production environment
+  client:
+    environment:
+      - REACT_APP_WELCOME_MESSAGE=Welcome to production environment

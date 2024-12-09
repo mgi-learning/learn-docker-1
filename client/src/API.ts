@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
 
-const baseUrl: string = 'http://localhost:4000'
+const baseUrl: string = process.env.REACT_APP_API_URL || 'http://localhost:4000'
+
+console.log(baseUrl);
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
@@ -9,7 +11,7 @@ export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
     )
     return todos
   } catch (error) {
-    throw new Error(error)
+    throw new Error(`${error}`)
   }
 }
 
@@ -28,7 +30,7 @@ export const addTodo = async (
     )
     return saveTodo
   } catch (error) {
-    throw new Error(error)
+    throw new Error(`${error}`)
   }
 }
 
@@ -45,7 +47,7 @@ export const updateTodo = async (
     )
     return updatedTodo
   } catch (error) {
-    throw new Error(error)
+    throw new Error(`${error}`)
   }
 }
 
@@ -58,6 +60,6 @@ export const deleteTodo = async (
     )
     return deletedTodo
   } catch (error) {
-    throw new Error(error)
+    throw new Error(`${error}`)
   }
 }
