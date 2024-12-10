@@ -13,6 +13,8 @@ services:
       - 27017:27017
     volumes:
       - ./database/db:/data/db
+    networks:
+      - loadBalancer
   mongo-express:
     image: mongo-express
     container_name: mexpress
@@ -27,23 +29,35 @@ services:
     restart: unless-stopped
     ports:
       - 8081:8081
+    networks:
+      - loadBalancer
   server: 
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: server
     restart: unless-stopped
     environment:
       - MONGO_URI=mongodb://root:password@mongo:27017/todo?authSource=admin
-    ports:
-      - 4000:4000
+    deploy:
+      mode: replicated
+      replicas: 3
     depends_on:
       - mongo
+    networks:
+      - loadBalancer
+  nginx:
+    build: ./nginx
+    container_name: nginx-custom
+    ports:
+      - 4000:80
+    networks:
+      - loadBalancer
+    depends_on:
+      - server
   client:
     build: 
       context: ./client
       dockerfile: Dockerfile
-    container_name: client
     restart: unless-stopped
     environment:
       - REACT_APP_API_URL=http://localhost:4000
@@ -51,3 +65,5 @@ services:
       - 3000:3000
     depends_on:
       - server
+networks:
+  loadBalancer:
